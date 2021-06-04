@@ -21,4 +21,6 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 ### important
+```bash
 you will need to add roles EMPLOYEE & CLIENT at the first.
+```
