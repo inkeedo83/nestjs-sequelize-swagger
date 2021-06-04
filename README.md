@@ -20,3 +20,5 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+### important
+you will need to add roles EMPLOYEE & CLIENT at the first.
