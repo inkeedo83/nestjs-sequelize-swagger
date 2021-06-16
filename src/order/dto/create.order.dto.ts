@@ -1,11 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsNumber } from 'class-validator';
+import { IsUUID } from 'class-validator';
 
+type productType = { productUid: string; quantity: number };
 export class CreateOrderDto {
-  @ApiProperty({ example: '1', description: 'Client ID' })
-  @IsNumber({ allowNaN: false })
-  readonly clientId: number;
-  @ApiProperty({ example: '[1,2]', description: 'Product ID' })
-  @IsArray({ message: 'should be array of integers' })
-  readonly productId: number[];
+  @ApiProperty({
+    example: 'g6547da0-ce04-11eb-a723-158b44814720',
+    description: 'Client ID',
+  })
+  @IsUUID('all')
+  readonly clientUid: string;
+
+  @ApiProperty({
+    type: ['productType'],
+    example:
+      '[{"productUid": "e6547da0-ce04-11eb-a723-158b44814720" ,"quantity":2}]',
+    description: 'order details',
+  })
+  products: productType[];
 }

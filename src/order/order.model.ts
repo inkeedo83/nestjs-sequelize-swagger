@@ -12,30 +12,51 @@ import { Client } from 'src/client/client.model';
 import { ProductOredr } from 'src/product/product-Order.model';
 import { Product } from 'src/product/product.model';
 
+type productType = { productUid: string; quantity: number };
 interface OrderCreationAttrs {
-  clientId: number;
-  productId: number[];
+  clientUid: string;
+  products: productType[];
 }
 
 @Table({ tableName: 'orders' })
 export class Order extends Model<Order, OrderCreationAttrs> {
-  @ApiProperty({ example: '1', description: 'Unique ID' })
+  @ApiProperty({ example: '1', description: 'index id' })
   @Column({
     type: DataType.INTEGER,
     unique: true,
     autoIncrement: true,
-    primaryKey: true,
   })
   id: number;
 
+  @ApiProperty({
+    example: 'e6547da0-ce04-11eb-a723-158b44814720',
+    description: 'Unique id',
+  })
+  @Column({
+    type: DataType.UUID,
+    unique: true,
+    defaultValue: DataType.UUIDV1,
+    primaryKey: true,
+  })
+  uid: string;
+
   @ForeignKey(() => Client)
-  @ApiProperty({ example: '1', description: 'Client ID' })
-  @Column({ type: DataType.INTEGER })
-  clientId: number;
+  @ApiProperty({ example: '1', description: 'Clients unique id' })
+  @Column({ type: DataType.UUID })
+  clientUid: string;
+
+  @ApiProperty({
+    type: ['productType'],
+    example:
+      '[{"productUid": "e6547da0-ce04-11eb-a723-158b44814720" ,"quantity":2}]',
+    description: 'products quantity in order',
+  })
+  @Column({ type: DataType.ARRAY(DataType.JSONB) })
+  products: productType[];
 
   @ApiProperty({ example: '100.0', description: 'Total price' })
-  @Column({ type: DataType.STRING, defaultValue: '0.0' })
-  totalPrice: string;
+  @Column({ type: DataType.FLOAT, defaultValue: '0.0' })
+  totalPrice: number;
 
   @BelongsTo(() => Client)
   author: Client;

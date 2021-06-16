@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -38,18 +39,18 @@ export class OrderController {
   @ApiResponse({ status: 200, type: Order })
   @Roles('EMPLOYEE', 'CLIENT')
   @UseGuards(RolesGuard)
-  @Get('/:id')
-  async getOne(@Param('id') id: number): Promise<Order> {
-    return await this.oredrService.getById(id);
+  @Get('/:uid')
+  async getOne(@Param('uid', new ParseUUIDPipe()) uid: string): Promise<Order> {
+    return await this.oredrService.getByUid(uid);
   }
 
   @ApiOperation({ summary: 'Delete order' })
   @ApiResponse({ status: 200, type: Order })
   @Roles('EMPLOYEE')
   @UseGuards(RolesGuard)
-  @Delete('/:id')
-  async delete(@Param('id') id: number) {
-    return await this.oredrService.delete(id);
+  @Delete('/:uid')
+  async delete(@Param('uid', new ParseUUIDPipe()) uid: string) {
+    return await this.oredrService.delete(uid);
   }
 
   @ApiOperation({ summary: 'Orders list' })

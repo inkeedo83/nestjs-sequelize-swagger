@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseUUIDPipe,
   Post,
   Put,
   UseGuards,
@@ -39,27 +40,32 @@ export class ProductController {
   @ApiResponse({ status: 200, type: Product })
   @Roles('EMPLOYEE', 'CLIENT')
   @UseGuards(RolesGuard)
-  @Get('/:id')
-  async getOne(@Param('id') id: number): Promise<Product> {
-    return await this.productService.getById(id);
+  @Get('/:uid')
+  async getOne(
+    @Param('uid', new ParseUUIDPipe()) uid: string,
+  ): Promise<Product> {
+    return await this.productService.getByUid(uid);
   }
 
   @ApiOperation({ summary: 'Edit product' })
   @ApiResponse({ status: 200, type: Product })
   @Roles('EMPLOYEE')
   @UseGuards(RolesGuard)
-  @Put('/:id')
-  async update(@Param('id') id: number, @Body() dto: CreateProductDto) {
-    return await this.productService.update(id, dto);
+  @Put('/:uid')
+  async update(
+    @Param('uid', new ParseUUIDPipe()) uid: string,
+    @Body() dto: CreateProductDto,
+  ) {
+    return await this.productService.update(uid, dto);
   }
 
   @ApiOperation({ summary: 'Delete product' })
   @ApiResponse({ status: 200, type: Product })
   @Roles('EMPLOYEE')
   @UseGuards(RolesGuard)
-  @Delete('/:id')
-  async delete(@Param('id') id: number) {
-    return await this.productService.delete(id);
+  @Delete('/:uid')
+  async delete(@Param('uid', new ParseUUIDPipe()) uid: string) {
+    return await this.productService.delete(uid);
   }
 
   @ApiOperation({ summary: 'Products list' })

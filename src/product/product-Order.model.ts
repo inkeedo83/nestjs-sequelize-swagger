@@ -19,10 +19,10 @@ export class ProductOredr extends Model<ProductOredr> {
   id: number;
 
   @ForeignKey(() => Product)
-  @Column({ type: DataType.INTEGER })
-  productId: number;
+  @Column({ type: DataType.UUID })
+  productUid: string;
 
   @ForeignKey(() => Order)
-  @Column({ type: DataType.INTEGER })
-  orderId: number;
+  @Column({ type: DataType.UUID })
+  orderUid: string;
 }

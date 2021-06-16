@@ -6,29 +6,30 @@ import { Product } from './product.model';
 @Injectable()
 export class ProductService {
   constructor(
-    @InjectModel(Product) private productRepository: typeof Product,
+    @InjectModel(Product) private readonly productRepository: typeof Product,
   ) {}
 
   async create(dto: CreateProductDto): Promise<Product> {
     return await this.productRepository.create(dto);
   }
 
-  async getById(id: number): Promise<Product> {
-    return await this.productRepository.findByPk(id);
+  async getByUid(uid: string): Promise<Product> {
+    return await this.productRepository.findByPk(uid);
   }
 
-  async update(id: number, dto: CreateProductDto) {
+  async update(uid: string, dto: CreateProductDto) {
     return await this.productRepository.update(
       {
         product: dto.product,
         price: dto.price,
+        quantity: dto.quantity,
       },
-      { where: { id } },
+      { where: { uid } },
     );
   }
 
-  async delete(id: number) {
-    return await this.productRepository.destroy({ where: { id } });
+  async delete(uid: string) {
+    return await this.productRepository.destroy({ where: { uid } });
   }
 
   async getAll(): Promise<Product[]> {
