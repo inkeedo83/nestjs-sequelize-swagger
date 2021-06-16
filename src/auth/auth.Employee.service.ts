@@ -40,7 +40,12 @@ export class AuthEmployeeService {
   }
 
   private async generateToken(user: Employee): Promise<{ token: string }> {
-    const payload = { email: user.email, id: user.id, role: user.roles };
+    const payload = {
+      email: user.email,
+      id: user.id,
+      uid: user.uid,
+      role: user.roles,
+    };
     return {
       token: this.jwtService.sign(payload),
     };
